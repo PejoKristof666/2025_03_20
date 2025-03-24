@@ -93,5 +93,34 @@ namespace _2025_03_20
 
             return all;
         }
+
+        public async Task<bool> create(string name, int age)
+        {
+            string url = serverUrl + "/createPerson";
+
+            try
+            {
+                var jsonInfo = new
+                {
+                    createName = name,
+                    createAge = age
+
+                };
+                string jsonStringified = JsonConvert.SerializeObject(jsonInfo);
+                HttpContent sendThis = new StringContent(jsonStringified, Encoding.UTF8, "Application/json");
+                HttpResponseMessage response = await client.PostAsync(url, sendThis);
+                response.EnsureSuccessStatusCode();
+                string result = await response.Content.ReadAsStringAsync();
+                JsonData data = JsonConvert.DeserializeObject<JsonData>(result);
+                return true;
+            }
+            catch (Exception e)
+            {
+
+                MessageBox.Show(e.Message);
+            }
+            return false;
+        }
+
     }
 }

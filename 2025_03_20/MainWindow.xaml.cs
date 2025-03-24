@@ -36,7 +36,7 @@ namespace _2025_03_20
             if (valami)
             {
                 MessageBox.Show("Logged in");
-                Window1 a = new Window1() { Top = this.Top, Left = this.Left, Visibility = Visibility.Visible };
+                Window1 a = new Window1(connection) { Top = this.Top, Left = this.Left, Visibility = Visibility.Visible };
                 this.Hide();
                 a.Closing += (ss, ee) =>
                 {

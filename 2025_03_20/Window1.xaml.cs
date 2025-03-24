@@ -28,10 +28,19 @@ namespace _2025_03_20
         }
         async void Start()
         {
-            List<string> all = await connection.Profiles();
-            foreach (string item in all)
+            ////List<string> all = await connection.AllName();
+            //foreach (string item in all)
+            //{
+            //    NameStack.Children.Add(new TextBlock() { Text = item });
+            //}
+        }
+
+        async void createPerson(object s, EventArgs e)
+        {
+            bool valami = await connection.create(NameInput.Text, Convert.ToInt32(AgeInput.Text));
+            if (valami)
             {
-                lista.Children.Add(new TextBlock() { Text = item });
+                MessageBox.Show("created person");
             }
         }
     }
