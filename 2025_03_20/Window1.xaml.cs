@@ -28,11 +28,32 @@ namespace _2025_03_20
         }
         async void Start()
         {
-            ////List<string> all = await connection.AllName();
-            //foreach (string item in all)
-            //{
-            //    NameStack.Children.Add(new TextBlock() { Text = item });
-            //}
+            List<string> names = await connection.AllName();
+
+            foreach (var name in names)
+            {
+                TextBlock nameTextBlock = new TextBlock
+                {
+                    Text = name,
+                    FontSize = 20,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center
+                };
+                NameStack.Children.Add(nameTextBlock);
+            }
+            List<string> ages = await connection.AllAge();
+
+            foreach (var age in ages)
+            {
+                TextBlock ageTextBlock = new TextBlock
+                {
+                    Text = age,
+                    FontSize = 20,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center
+                };
+                AgeStack.Children.Add(ageTextBlock);
+            }
         }
 
         async void createPerson(object s, EventArgs e)
@@ -40,7 +61,11 @@ namespace _2025_03_20
             bool valami = await connection.create(NameInput.Text, Convert.ToInt32(AgeInput.Text));
             if (valami)
             {
+
                 MessageBox.Show("created person");
+                NameStack.Children.Clear();
+                AgeStack.Children.Clear();
+                Start();
             }
         }
     }
