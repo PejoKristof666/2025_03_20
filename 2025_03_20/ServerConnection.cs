@@ -161,5 +161,24 @@ namespace _2025_03_20
 
             return all;
         }
+
+        public async Task<List<string>> DeletePerson()
+        {
+            List<string> all = new List<string>();
+            string url = serverUrl + "/deletePerson";
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                string result = await response.Content.ReadAsStringAsync();
+                all = JsonConvert.DeserializeObject<List<JsonData>>(result).Select(item => item.name).ToList();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+            return all;
+        }
     }
 }

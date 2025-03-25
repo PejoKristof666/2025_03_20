@@ -32,6 +32,7 @@ namespace _2025_03_20
 
             foreach (var name in names)
             {
+                
                 TextBlock nameTextBlock = new TextBlock
                 {
                     Text = name,
@@ -40,6 +41,22 @@ namespace _2025_03_20
                     HorizontalAlignment = HorizontalAlignment.Center
                 };
                 NameStack.Children.Add(nameTextBlock);
+                
+                Button deleteB = new Button
+                {
+                    Content = "X",
+                    FontSize = 10,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Margin = nameTextBlock.Margin    
+                };
+
+                deleteB.Click += (s, e) =>
+                {
+                    Task<List<string>> task = connection.DeletePerson();
+                };
+
+                deleteButtonStack.Children.Add(deleteB);
             }
             List<string> ages = await connection.AllAge();
 
@@ -65,6 +82,7 @@ namespace _2025_03_20
                 MessageBox.Show("created person");
                 NameStack.Children.Clear();
                 AgeStack.Children.Clear();
+                deleteButtonStack.Children.Clear();
                 Start();
             }
         }
