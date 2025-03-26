@@ -73,7 +73,6 @@ namespace _2025_03_20
             }
             return false;
         }
-
         public async Task<List<string>> Profiles()
         {
             List<string> all = new List<string>();
@@ -116,7 +115,83 @@ namespace _2025_03_20
             }
             catch (Exception e)
             {
+                MessageBox.Show(e.Message);
+            }
+            return false;
+        }
 
+        public async Task<bool> DeletePerson(string name)
+        {
+            string url = serverUrl + "/deletePerson";
+
+            try
+            {
+                var jsonInfo = new
+                {
+                    deleteName = name
+                };
+                string jsonStringified = JsonConvert.SerializeObject(jsonInfo);
+                HttpContent sendThis = new StringContent(jsonStringified, Encoding.UTF8, "Application/json");
+                HttpResponseMessage response = await client.PostAsync(url, sendThis);
+                response.EnsureSuccessStatusCode();
+                string result = await response.Content.ReadAsStringAsync();
+                JsonData data = JsonConvert.DeserializeObject<JsonData>(result);
+                if (data.message == "Sikeres törlés")
+                {
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            return false;
+        }
+
+        public async Task<bool> DeleteAllPerson()
+        {
+            string url = serverUrl + "/deleteAll";
+
+            try
+            {
+                HttpResponseMessage response = await client.PostAsync(url, null);
+                response.EnsureSuccessStatusCode();
+                string result = await response.Content.ReadAsStringAsync();
+                JsonData data = JsonConvert.DeserializeObject<JsonData>(result);
+                if (data.message == "Sikeres törlés")
+                {
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            return false;
+        }
+
+        public async Task<bool> editP(string name, int age)
+        {
+            string url = serverUrl + "/editPerson";
+
+            try
+            {
+                var jsonInfo = new
+                {
+                    editName = name,
+                    editAge = age
+
+                };
+                string jsonStringified = JsonConvert.SerializeObject(jsonInfo);
+                HttpContent sendThis = new StringContent(jsonStringified, Encoding.UTF8, "Application/json");
+                HttpResponseMessage response = await client.PostAsync(url, sendThis);
+                response.EnsureSuccessStatusCode();
+                string result = await response.Content.ReadAsStringAsync();
+                JsonData data = JsonConvert.DeserializeObject<JsonData>(result);
+                return true;
+            }
+            catch (Exception e)
+            {
                 MessageBox.Show(e.Message);
             }
             return false;
@@ -156,25 +231,6 @@ namespace _2025_03_20
             catch (Exception e)
             {
 
-                MessageBox.Show(e.Message);
-            }
-
-            return all;
-        }
-
-        public async Task<List<string>> DeletePerson()
-        {
-            List<string> all = new List<string>();
-            string url = serverUrl + "/deletePerson";
-            try
-            {
-                HttpResponseMessage response = await client.GetAsync(url);
-                response.EnsureSuccessStatusCode();
-                string result = await response.Content.ReadAsStringAsync();
-                all = JsonConvert.DeserializeObject<List<JsonData>>(result).Select(item => item.name).ToList();
-            }
-            catch (Exception e)
-            {
                 MessageBox.Show(e.Message);
             }
 
